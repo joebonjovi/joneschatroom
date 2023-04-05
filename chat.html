@@ -1,0 +1,137 @@
+<html>
+<head>
+<title>MRS. JONES CHAT</title>
+<meta name="viewport" content= "width=device-width, initial-scale=1.0">
+
+<script type="module">
+var name;
+if(localStorage.getItem("name") == null){
+name = "user";
+}else{
+name = localStorage.getItem("name");
+}
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-app.js";
+  import { getDatabase, ref, set, push, child, onValue, get, onChildAdded, query, limitToLast, remove } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-database.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyCmRU3U2CWeUU1TORO6Yx4X_zOqqK7XeKk",
+    authDomain: "chatroom-677b8.firebaseapp.com",
+    projectId: "chatroom-677b8",
+    storageBucket: "chatroom-677b8.appspot.com",
+    messagingSenderId: "498877073830",
+    appId: "1:498877073830:web:f7a46119f2b8ae3923a767",
+    measurementId: "G-V0KXK0Y5S7"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+  const database = getDatabase();
+document.getElementById("send").onclick = function(){
+const newPostKey = push(child(ref(database), 'chats')).key;
+var chatData = document.getElementById("chat").value
+chatData = chatData.toLowerCase()
+chatData = chatData.replace("nigger", "*****")
+chatData = chatData.replace("nigga", "*****")
+ set(ref(database, "chats/"+ newPostKey), name+": "+chatData)
+document.getElementById("chat").value = "";
+};
+
+
+const last = query(ref(database, 'chats'), limitToLast(1));
+onChildAdded(last, (snapshot) => {
+document.getElementById("chatSpace").innerHTML += "<li>"+snapshot.val()+"</li>";
+var audio = new Audio('alert.mp3');
+audio.loop = false;
+audio.play();
+});
+function settings(){
+document.getElementById("settings").style.display = "block"
+}
+
+</script>
+<style>
+body{
+background-color: black;
+overflow-x: hidden;
+overflow-y: auto;
+}
+li{
+list-style: none;
+font-family: Arial;
+}
+
+h3{
+font-family: Arial;
+color: white;
+margin: -10 -10 0 -10;
+padding: 10px;
+
+}
+
+#chatdiv{
+margin-top: 25;
+margin-right: 5;
+background-color: white;
+padding: 10;
+border-radius: 5px;
+min-width: 250;
+
+}
+
+input{
+padding: 5;
+border-bottom: solid grey 5px;
+border-radius: 5px;
+}
+
+button{
+padding: 5;
+border: solid black 3px;
+border-radius: 5px;
+}
+
+img{
+position: relative;
+left: 240;
+bottom: 37;
+border: solid grey 3px;
+border-radius: 5px;
+}
+
+#settings{
+display: none;
+z-index: 3;
+width: 500;
+hieght: 500;
+background-color: white;
+padding: 10;
+}
+
+#navbar{
+min-width: 250;
+}
+</style>
+</head>
+<body>
+<div id="navbar">
+<h3>MRS. JONES CHATROOM</h3>
+<a href="settings.html"><img src=https://www.clipartkey.com/mpngs/m/70-702786_file-windows-settings-app-windows-10-settings-icon.png width = 20 hieght = auto></a>
+</div>
+<div id= "chatdiv">
+<input id="chat">
+<button id="send">send</button>
+<br>
+<b><ul id="chatSpace"></ul></b>
+</div>
+<div id="settings">
+hello
+</div>
+</body>
+</html>
